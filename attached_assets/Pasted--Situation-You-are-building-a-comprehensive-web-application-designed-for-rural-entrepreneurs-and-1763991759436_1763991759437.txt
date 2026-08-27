@@ -1,0 +1,39 @@
+**Situation**
+You are building a comprehensive web application designed for rural entrepreneurs and farmers in India who need to discover and apply for government schemes, loans, and subsidies. The application must serve users with varying levels of digital literacy and language preferences, requiring an intuitive, visually-driven interface with multilingual support. The platform needs to handle real scheme data, application tracking, user authentication, and identity verification while maintaining data security through a MongoDB cluster.
+
+**Task**
+Develop a full-stack MERN web application with the following core components:
+
+1. **Authentication System**: Build realistic sign-up and login functionality with email/phone verification, password reset, and session management.
+
+2. **User Dashboard**: Create a personalized dashboard displaying: (a) schemes the user has already applied for with current status, (b) partially completed applications with resume options, (c) recommended schemes based on user profile, and (d) user profile management with editable information.
+
+3. **Scheme Discovery & Application**: Build a searchable scheme catalog with filters for eligibility criteria. Each scheme detail page should include: eligibility requirements, required documents, application deadlines, benefits, and a multi-step application form that captures realistic data fields specific to each scheme.
+
+4. **Multilingual Chatbot**: Implement an interactive chatbot that responds in Kannada, Hindi, and English, helping users navigate the app, understand scheme eligibility, and answer common questions.
+
+5. **Identity Verification Module**: Develop a Flask-based microservice using deep learning (CNN/TensorFlow) that verifies uploaded identity documents (Aadhar, PAN) through image recognition and validation.
+
+6. **Database Architecture**: Design MongoDB collections to store user profiles, scheme details, applications, verification records, and chatbot interaction logs.
+
+**Objective**
+Enable rural users with limited digital literacy to independently discover relevant government schemes, understand eligibility criteria, complete applications, and track their progress—all through an accessible, picture-rich interface available in their preferred language. The application should reduce barriers to accessing government benefits by providing guided, multilingual support and automated document verification.
+
+**Knowledge**
+- **Target Users**: Rural entrepreneurs and farmers with varying digital literacy levels; prioritize visual design and simple navigation
+- **Real Scheme Data**: Integrate actual government scheme information including eligibility criteria, required documents, application procedures, and benefits from official sources
+- **Technology Stack**: MERN (MongoDB, Express, React, Node.js) for the web application; Flask for the identity verification microservice; MongoDB cluster for data persistence
+- **Multilingual Requirements**: Support Kannada, Hindi, and English with language switching available throughout the application
+- **UI/UX Approach**: Use normal CSS (avoid complex frameworks); implement pictorial representations, icons, and visual indicators instead of text-heavy content; ensure large, readable fonts and high-contrast colors for accessibility
+- **Identity Verification**: Use deep learning algorithms (TensorFlow/Keras with CNN) to validate Aadhar and PAN card images for authenticity and readability
+- **Application Workflow**: Multi-step forms that save progress, allowing users to return and complete applications later
+- **Document Management**: Store uploaded documents securely in MongoDB or cloud storage with encryption
+
+**Key Implementation Considerations**
+- Design the UI with farmers and rural entrepreneurs in mind: use icons, illustrations, and color coding instead of complex text; include progress indicators for multi-step processes
+- Ensure the chatbot can handle colloquial language and common questions in all three languages
+- Implement role-based access control to distinguish between regular users and admin users managing scheme data
+- Create an admin panel for updating scheme information, managing user applications, and monitoring verification requests
+- Use responsive design to support both desktop and mobile access, as rural users may primarily access via smartphones
+- Implement proper error handling and validation for document uploads to ensure only valid identity documents are processed
+- Store sensitive user data (identity documents, personal information) with encryption at rest and in transit

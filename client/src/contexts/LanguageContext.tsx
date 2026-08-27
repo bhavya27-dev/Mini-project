@@ -1,0 +1,235 @@
+import { createContext, useContext, useState, useEffect } from 'react';
+
+type Language = 'en' | 'kn' | 'hi';
+
+interface LanguageContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => string;
+}
+
+const translations = {
+  en: {
+    appName: 'Rural Entrepreneur Schemes',
+    login: 'Login',
+    signup: 'Sign Up',
+    logout: 'Logout',
+    dashboard: 'Dashboard',
+    schemes: 'Schemes',
+    myApplications: 'My Applications',
+    profile: 'Profile',
+    admin: 'Admin Panel',
+    phone: 'Phone Number',
+    password: 'Password',
+    name: 'Name',
+    email: 'Email',
+    state: 'State',
+    district: 'District',
+    occupation: 'Occupation',
+    monthlyIncome: 'Monthly Income (₹)',
+    hasLand: 'Do you own land?',
+    landArea: 'Land Area (acres)',
+    gender: 'Gender',
+    dateOfBirth: 'Date of Birth',
+    submit: 'Submit',
+    cancel: 'Cancel',
+    save: 'Save',
+    edit: 'Edit',
+    delete: 'Delete',
+    view: 'View',
+    apply: 'Apply Now',
+    continue: 'Continue',
+    previous: 'Previous',
+    next: 'Next',
+    search: 'Search',
+    filter: 'Filter',
+    category: 'Category',
+    eligibility: 'Eligibility',
+    benefits: 'Benefits',
+    documents: 'Required Documents',
+    deadline: 'Application Deadline',
+    status: 'Status',
+    draft: 'Draft',
+    submitted: 'Submitted',
+    underReview: 'Under Review',
+    approved: 'Approved',
+    rejected: 'Rejected',
+    agriculture: 'Agriculture',
+    business: 'Business',
+    women: 'Women Empowerment',
+    education: 'Education & Training',
+    housing: 'Housing',
+    health: 'Healthcare',
+    welcome: 'Welcome',
+    recommendedSchemes: 'Recommended for You',
+    appliedSchemes: 'Your Applications',
+    draftApplications: 'Draft Applications',
+    completionRate: 'Completion Rate',
+    resume: 'Resume Application',
+    uploadDocument: 'Upload Document',
+    chatHelp: 'Need Help?',
+    askQuestion: 'Ask a question...',
+    male: 'Male',
+    female: 'Female',
+    other: 'Other',
+  },
+  kn: {
+    appName: 'ಗ್ರಾಮೀಣ ಉದ್ಯಮಿ ಯೋಜನೆಗಳು',
+    login: 'ಲಾಗಿನ್',
+    signup: 'ಸೈನ್ ಅಪ್',
+    logout: 'ಲಾಗೌಟ್',
+    dashboard: 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
+    schemes: 'ಯೋಜನೆಗಳು',
+    myApplications: 'ನನ್ನ ಅರ್ಜಿಗಳು',
+    profile: 'ಪ್ರೊಫೈಲ್',
+    admin: 'ನಿರ್ವಾಹಕ ಪ್ಯಾನಲ್',
+    phone: 'ದೂರವಾಣಿ ಸಂಖ್ಯೆ',
+    password: 'ಪಾಸ್‌ವರ್ಡ್',
+    name: 'ಹೆಸರು',
+    email: 'ಇಮೇಲ್',
+    state: 'ರಾಜ್ಯ',
+    district: 'ಜಿಲ್ಲೆ',
+    occupation: 'ವೃತ್ತಿ',
+    monthlyIncome: 'ಮಾಸಿಕ ಆದಾಯ (₹)',
+    hasLand: 'ನಿಮ್ಮ ಬಳಿ ಭೂಮಿ ಇದೆಯೇ?',
+    landArea: 'ಭೂಮಿ ವಿಸ್ತೀರ್ಣ (ಎಕರೆ)',
+    gender: 'ಲಿಂಗ',
+    dateOfBirth: 'ಹುಟ್ಟಿದ ದಿನಾಂಕ',
+    submit: 'ಸಲ್ಲಿಸಿ',
+    cancel: 'ರದ್ದು ಮಾಡಿ',
+    save: 'ಉಳಿಸಿ',
+    edit: 'ಸಂಪಾದಿಸಿ',
+    delete: 'ಅಳಿಸಿ',
+    view: 'ನೋಡಿ',
+    apply: 'ಈಗ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ',
+    continue: 'ಮುಂದುವರಿಸಿ',
+    previous: 'ಹಿಂದಿನದು',
+    next: 'ಮುಂದಿನದು',
+    search: 'ಹುಡುಕಿ',
+    filter: 'ಫಿಲ್ಟರ್',
+    category: 'ವರ್ಗ',
+    eligibility: 'ಅರ್ಹತೆ',
+    benefits: 'ಪ್ರಯೋಜನಗಳು',
+    documents: 'ಅಗತ್ಯ ದಾಖಲೆಗಳು',
+    deadline: 'ಅರ್ಜಿ ಕೊನೆಯ ದಿನಾಂಕ',
+    status: 'ಸ್ಥಿತಿ',
+    draft: 'ಡ್ರಾಫ್ಟ್',
+    submitted: 'ಸಲ್ಲಿಸಲಾಗಿದೆ',
+    underReview: 'ಪರಿಶೀಲನೆಯಲ್ಲಿದೆ',
+    approved: 'ಅನುಮೋದಿಸಲಾಗಿದೆ',
+    rejected: 'ತಿರಸ್ಕರಿಸಲಾಗಿದೆ',
+    agriculture: 'ಕೃಷಿ',
+    business: 'ವ್ಯಾಪಾರ',
+    women: 'ಮಹಿಳಾ ಸಬಲೀಕರಣ',
+    education: 'ಶಿಕ್ಷಣ ಮತ್ತು ತರಬೇತಿ',
+    housing: 'ವಸತಿ',
+    health: 'ಆರೋಗ್ಯ',
+    welcome: 'ಸ್ವಾಗತ',
+    recommendedSchemes: 'ನಿಮಗಾಗಿ ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ',
+    appliedSchemes: 'ನಿಮ್ಮ ಅರ್ಜಿಗಳು',
+    draftApplications: 'ಡ್ರಾಫ್ಟ್ ಅರ್ಜಿಗಳು',
+    completionRate: 'ಪೂರ್ಣಗೊಳಿಸುವಿಕೆ ದರ',
+    resume: 'ಅರ್ಜಿ ಮುಂದುವರಿಸಿ',
+    uploadDocument: 'ದಾಖಲೆ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ',
+    chatHelp: 'ಸಹಾಯ ಬೇಕೇ?',
+    askQuestion: 'ಪ್ರಶ್ನೆ ಕೇಳಿ...',
+    male: 'ಪುರುಷ',
+    female: 'ಮಹಿಳೆ',
+    other: 'ಇತರೆ',
+  },
+  hi: {
+    appName: 'ग्रामीण उद्यमी योजनाएं',
+    login: 'लॉगिन',
+    signup: 'साइन अप',
+    logout: 'लॉगआउट',
+    dashboard: 'डैशबोर्ड',
+    schemes: 'योजनाएं',
+    myApplications: 'मेरे आवेदन',
+    profile: 'प्रोफ़ाइल',
+    admin: 'प्रशासन पैनल',
+    phone: 'फ़ोन नंबर',
+    password: 'पासवर्ड',
+    name: 'नाम',
+    email: 'ईमेल',
+    state: 'राज्य',
+    district: 'जिला',
+    occupation: 'व्यवसाय',
+    monthlyIncome: 'मासिक आय (₹)',
+    hasLand: 'क्या आपके पास जमीन है?',
+    landArea: 'भूमि क्षेत्र (एकड़)',
+    gender: 'लिंग',
+    dateOfBirth: 'जन्म तिथि',
+    submit: 'जमा करें',
+    cancel: 'रद्द करें',
+    save: 'सहेजें',
+    edit: 'संपादित करें',
+    delete: 'हटाएं',
+    view: 'देखें',
+    apply: 'अभी आवेदन करें',
+    continue: 'जारी रखें',
+    previous: 'पिछला',
+    next: 'अगला',
+    search: 'खोजें',
+    filter: 'फ़िल्टर',
+    category: 'श्रेणी',
+    eligibility: 'पात्रता',
+    benefits: 'लाभ',
+    documents: 'आवश्यक दस्तावेज़',
+    deadline: 'आवेदन की अंतिम तिथि',
+    status: 'स्थिति',
+    draft: 'ड्राफ्ट',
+    submitted: 'जमा किया गया',
+    underReview: 'समीक्षाधीन',
+    approved: 'स्वीकृत',
+    rejected: 'अस्वीकृत',
+    agriculture: 'कृषि',
+    business: 'व्यापार',
+    women: 'महिला सशक्तिकरण',
+    education: 'शिक्षा और प्रशिक्षण',
+    housing: 'आवास',
+    health: 'स्वास्थ्य',
+    welcome: 'स्वागत है',
+    recommendedSchemes: 'आपके लिए अनुशंसित',
+    appliedSchemes: 'आपके आवेदन',
+    draftApplications: 'ड्राफ्ट आवेदन',
+    completionRate: 'पूर्णता दर',
+    resume: 'आवेदन जारी रखें',
+    uploadDocument: 'दस्तावेज़ अपलोड करें',
+    chatHelp: 'मदद चाहिए?',
+    askQuestion: 'प्रश्न पूछें...',
+    male: 'पुरुष',
+    female: 'महिला',
+    other: 'अन्य',
+  },
+};
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
+  const [language, setLanguage] = useState<Language>(() => {
+    const saved = localStorage.getItem('language');
+    return (saved as Language) || 'en';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
+
+  const t = (key: string): string => {
+    return translations[language][key as keyof typeof translations.en] || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within LanguageProvider');
+  }
+  return context;
+}
